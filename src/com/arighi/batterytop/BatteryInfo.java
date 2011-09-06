@@ -155,7 +155,7 @@ public class BatteryInfo extends BroadcastReceiver {
                                (((int)seconds % 3600) / 60)   + "min, " +
                                ((int)seconds % 60)            + "sec\n");
             } else {
-                builder.append("  time left: unknown\n");
+                builder.append("  time left: evaluating...\n");
             }
         }
 
