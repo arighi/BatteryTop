@@ -2,7 +2,7 @@
 
 Android application to show detailed battery informations in a top-like format.
 
-== How to build in debug-mode ==
+== How to build the application in debug-mode ==
 
 These are the steps to build the application in debug-mode and test it on any
 Android device.
@@ -11,6 +11,11 @@ Android device.
 
  - build the application (be sure to replace the path below):
    $ ant -Dsdk.dir=/path/to/android/sdk/root/dir debug
+
+NOTE: instead of always passing the path of the Android SDK from the command
+line, you can also store the path into the file local.properties:
+
+   $ echo sdk.dir=/home/righiandr/Software/android-sdk-linux_x86 > local.properties
 
  - install the application to the device
    $ adb install bin/BatteryTop-debug.apk
