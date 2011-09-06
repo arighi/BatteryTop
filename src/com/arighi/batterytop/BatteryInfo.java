@@ -67,8 +67,8 @@ public class BatteryInfo extends BroadcastReceiver {
 
     private BatteryView bv = null;
 
-    private float voltageSpeed = 0;
-    private long startVoltage = 0;
+    private float levelSpeed = 0;
+    private float startLevel = 0;
     private long startTime = 0;
 
     private class BatteryView {
@@ -123,20 +123,22 @@ public class BatteryInfo extends BroadcastReceiver {
         builder.append("\nBattery (additional statistics)\n");
 
         /* Update voltage level */
-        long voltage = intent.getIntExtra("voltage", 0);
+        float level = (float)intent.getIntExtra("level", 0) /
+                      (float)intent.getIntExtra("scale", 0);
         long time = System.currentTimeMillis();
         int plugged = intent.getIntExtra("plugged", -1);
 
         /* Evaluate voltage speed */
-        if ((startVoltage == 0) && (startTime == 0)) {
-            startVoltage = voltage;
+        if ((startLevel == 0) && (startTime == 0)) {
+            startLevel = level;
             startTime = time;
         }
-        if (((voltage - startVoltage) != 0) && ((time - startTime) != 0)) {
-            voltageSpeed = (float)((voltage - startVoltage) * 1000) /
+        if (((level - startLevel) != 0) && ((time - startTime) != 0)) {
+            levelSpeed = (float)((level - startLevel) * 1000) /
                             (time - startTime);
         }
-        builder.append("  charge/discharge speed: " + voltageSpeed + "mV/s\n");
+        builder.append("  charge/discharge speed: " +
+                       (levelSpeed * 100) + "%/s\n");
 
         /* Evaluate discharge time if unplugged */
         if (plugged == 0) {
@@ -144,16 +146,16 @@ public class BatteryInfo extends BroadcastReceiver {
             String startTimeString = formatter.format(startTime);
 
             builder.append("  start time: " + startTimeString + "\n");
-            builder.append("  start voltage: " + startVoltage + "mV\n");
+            builder.append("  start level: " + (startLevel * 100) + "%\n");
 
-            if (voltageSpeed < 0) {
-                float seconds = voltage / -voltageSpeed;
-                builder.append("  depletion time: " +
+            if (levelSpeed < 0) {
+                float seconds = level / -levelSpeed;
+                builder.append("  time left: " +
                                ((int)seconds / 3600)          + "hours, " +
                                (((int)seconds % 3600) / 60)   + "min, " +
                                ((int)seconds % 60)            + "sec\n");
             } else {
-                builder.append("  depletion time: unknown\n");
+                builder.append("  time left: unknown\n");
             }
         }
 
