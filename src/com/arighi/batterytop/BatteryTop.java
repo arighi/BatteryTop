@@ -76,29 +76,22 @@ public class BatteryTop extends Activity
                 startVoltage = voltage;
                 startTime = time;
             }
-            if (plugged != 0) {
-                startVoltage = 0;
-                startTime = 0;
-                voltageSpeed = 0;
-            } else if (((voltage - startVoltage) != 0) && ((time - startTime) != 0)) {
-                voltageSpeed = (float)(voltage - startVoltage) * 1000 /
+            if (((voltage - startVoltage) != 0) && ((time - startTime) != 0)) {
+                voltageSpeed = (float)((voltage - startVoltage) * 1000) /
                                 (time - startTime);
-                startVoltage = voltage;
-                startTime = time;
             }
-            if (Math.abs(voltageSpeed) < 1E-3)
-                voltageSpeed = 0;
             builder.append("  voltage/s " + voltageSpeed + "\n");
 
+            /* Evaluate discharge time if unplugged */
             if (plugged == 0) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String startTimeString = formatter.format(startTime);
 
+                builder.append("  start time: " + startTimeString + "\n");
                 builder.append("  start voltage: " + startVoltage + "\n");
-                builder.append("  start discharge: " + startTimeString + "\n");
 
                 if (voltageSpeed < 0) {
-                    float seconds = -voltage / voltageSpeed;
+                    float seconds = voltage / -voltageSpeed;
                     builder.append("  depletion time: " +
                                    ((int)seconds / 3600)          + "hours, " +
                                    (((int)seconds % 3600) / 60)   + "min, " +
