@@ -1,0 +1,16 @@
+= BatteryTop =
+
+Android application to show detailed battery informations in a top-like format.
+
+== How to build in debug-mode ==
+
+These are the steps to build the application in debug-mode and test it on any
+Android device.
+
+ - download the latest Android SDK (http://developer.android.com/sdk/index.html)
+
+ - build the application (be sure to replace the path below):
+   $ ant -Dsdk.dir=/path/to/android/sdk/root/dir debug
+
+ - install the application to the device
+   $ adb install bin/BatteryTop-debug.apk
