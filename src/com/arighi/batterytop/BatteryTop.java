@@ -20,6 +20,7 @@
 
 package com.arighi.batterytop;
 
+import android.hardware.SensorManager;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -29,16 +30,20 @@ import android.widget.TextView;
 public class BatteryTop extends Activity
 {
     private BatteryInfo bi = null;
+    private SensorInfo si = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        bi = new BatteryInfo((TextView)findViewById(R.id.text));
+        bi = new BatteryInfo((TextView)findViewById(R.id.battery));
 
         IntentFilter mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(bi, mIntentFilter);
+
+        si = new SensorInfo((SensorManager)getSystemService(SENSOR_SERVICE),
+                     (TextView)findViewById(R.id.sensor));
     }
 
     protected void onResume() {
