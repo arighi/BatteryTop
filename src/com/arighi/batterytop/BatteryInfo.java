@@ -69,6 +69,7 @@ public class BatteryInfo extends BroadcastReceiver {
 
     private float levelSpeed = 0;
     private float startLevel = 0;
+    private float lastLevel = 0;
     private long startTime = 0;
 
     private class BatteryView {
@@ -131,11 +132,13 @@ public class BatteryInfo extends BroadcastReceiver {
         /* Evaluate voltage speed */
         if ((startLevel == 0) && (startTime == 0)) {
             startLevel = level;
+            lastLevel = level;
             startTime = time;
         }
-        if (((level - startLevel) != 0) && ((time - startTime) != 0)) {
+        if ((level != lastLevel) && (time != startTime)) {
             levelSpeed = (float)((level - startLevel) * 1000) /
                             (time - startTime);
+            lastLevel = level;
         }
         builder.append("  charge/discharge speed: " +
                        (levelSpeed * 100) + "%/s\n");
